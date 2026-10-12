@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abba Schedule 1 Beta</title>
+<meta name="description" content="Abba Schedule 1 — film and TV scheduling for the Mac. Beta download for invited testers.">
+<!-- For invited testers: reachable by its link, kept out of search engines. -->
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Abba Schedule 1 — beta">
+<meta property="og:description" content="Film and TV scheduling for the Mac. Download the beta and install it in three steps.">
+<meta property="og:image" content="https://christianabbat-glitch.github.io/abbaschedule/icon.png">
+<meta name="theme-color" content="#FBF6EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16110C" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  @font-face { font-family: "Archivo"; src: url("fonts/Archivo-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Archivo"; src: url("fonts/Archivo-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Archivo Expanded"; src: url("fonts/ArchivoExpanded-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+
+  :root {
+    color-scheme: light dark;
+    --bg: #FBF6EC;
+    --surface: #FFFFFF;
+    --ink: #2A1A0E;
+    --muted: #6E5A49;
+    --line: #EADFCB;
+    --accent: #FF6600;          /* AS1's own Orange accent */
+    --accent-ink: #FFFFFF;
+    --accent-hover: #E55B00;
+    --gold: #F2B705;
+    --step: #6B2E0E;            /* the icon's brown outline */
+    --step-ink: #FFFFFF;
+    --strip-white: #FFFFFF;
+    --strip-yellow: #FFE97A;
+    --strip-blue: #A9CFF4;
+    --strip-green: #B5DE98;
+    --strip-break: #2A1A0E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16110C;
+      --surface: #211A13;
+      --ink: #F6EEE2;
+      --muted: #BCA893;
+      --line: #3A2E22;
+      --accent: #FF7A26;
+      --accent-ink: #1A0E05;
+      --accent-hover: #FF8F4A;
+      --step: #F2B705;
+      --step-ink: #1A0E05;
+      --strip-white: #E9E2D6;
+      --strip-yellow: #D9C24E;
+      --strip-blue: #7FA9D3;
+      --strip-green: #8DB874;
+      --strip-break: #000000;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16110C; --surface: #211A13; --ink: #F6EEE2; --muted: #BCA893; --line: #3A2E22;
+    --accent: #FF7A26; --accent-ink: #1A0E05; --accent-hover: #FF8F4A; --step: #F2B705; --step-ink: #1A0E05;
+    --strip-white: #E9E2D6; --strip-yellow: #D9C24E; --strip-blue: #7FA9D3; --strip-green: #8DB874; --strip-break: #000000;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Archivo", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  /* A stripboard along the top: day strips in the industry colors, a black day break now and then. */
+  .board {
+    height: 14px;
+    background: linear-gradient(90deg,
+      var(--strip-white) 0 4%, var(--strip-yellow) 4% 8%, var(--strip-blue) 8% 12%, var(--strip-white) 12% 16%,
+      var(--strip-green) 16% 20%, var(--strip-break) 20% 21.5%, var(--strip-yellow) 21.5% 25.5%,
+      var(--strip-white) 25.5% 29.5%, var(--strip-yellow) 29.5% 33.5%, var(--strip-blue) 33.5% 37.5%,
+      var(--strip-break) 37.5% 39%, var(--strip-white) 39% 43%, var(--strip-green) 43% 47%, var(--strip-blue) 47% 51%,
+      var(--strip-yellow) 51% 55%, var(--strip-white) 55% 59%, var(--strip-break) 59% 60.5%, var(--strip-blue) 60.5% 64.5%,
+      var(--strip-yellow) 64.5% 68.5%, var(--strip-white) 68.5% 72.5%, var(--strip-green) 72.5% 76.5%,
+      var(--strip-break) 76.5% 78%, var(--strip-yellow) 78% 82%, var(--strip-white) 82% 86%, var(--strip-blue) 86% 90%,
+      var(--strip-white) 90% 94%, var(--strip-yellow) 94% 98%, var(--strip-break) 98% 100%);
+    border-bottom: 1px solid var(--line);
+    background-size: 900px 100%;
+  }
+
+  main { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+
+  .hero { text-align: center; padding: 56px 0 40px; }
+  .hero img { width: 128px; height: 128px; display: block; margin: 0 auto 20px; }
+  .tag {
+    display: inline-block; margin: 0 0 12px; padding: 3px 12px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+    color: var(--muted); font-size: 14px; letter-spacing: 0.02em;
+  }
+  h1 {
+    font-family: "Archivo Expanded", "Archivo", sans-serif; font-weight: 700;
+    font-size: clamp(32px, 7vw, 46px); line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 14px;
+  }
+  .lede { font-size: 19px; color: var(--muted); max-width: 30em; margin: 0 auto 30px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; font-size: 18px; text-decoration: none;
+    padding: 15px 30px; border-radius: 12px;
+    transition: background-color 120ms ease, transform 120ms ease;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn.secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); font-size: 16px; padding: 11px 22px; }
+  .btn.secondary:hover { background: var(--surface); }
+  .meta { margin: 12px 0 0; font-size: 15px; color: var(--muted); }
+  .req { margin: 18px auto 0; max-width: 28em; font-size: 15px; color: var(--muted); }
+  .req strong { color: var(--ink); font-weight: 700; }
+
+  section { padding: 36px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 24px; line-height: 1.25; margin: 0 0 18px; }
+  h3 { font-size: 17px; line-height: 1.35; margin: 0 0 4px; }
+  p { margin: 0 0 12px; }
+
+  .steps { list-style: none; counter-reset: step; padding: 0; margin: 0 0 18px; display: grid; gap: 14px; }
+  .steps li {
+    counter-increment: step; position: relative;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px 20px 16px 68px;
+  }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 20px; top: 18px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--step); color: var(--step-ink);
+    display: grid; place-items: center; font-weight: 700; font-size: 16px;
+  }
+  .steps p { margin: 0; color: var(--muted); }
+  .path { color: var(--ink); font-weight: 700; white-space: nowrap; }
+  .note { font-size: 15px; color: var(--muted); }
+
+  .facts { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  .facts li { padding-left: 20px; position: relative; }
+  .facts li::before {
+    content: ""; position: absolute; left: 0; top: 0.5em; width: 9px; height: 9px;
+    border-radius: 2px; background: var(--gold);
+  }
+  .facts strong { display: block; }
+  .facts span { color: var(--muted); }
+
+  .feedback { text-align: center; }
+  .feedback p { color: var(--muted); max-width: 30em; margin: 0 auto 20px; }
+
+  footer {
+    max-width: 680px; margin: 0 auto; padding: 28px 16px 44px;
+    border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: center;
+  }
+  footer p { margin: 0 0 6px; }
+
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    .hero { padding-top: 40px; }
+    .hero img { width: 104px; height: 104px; }
+    .lede { font-size: 17px; }
+    .btn { width: 100%; justify-content: center; }
+    .steps li { padding: 16px 16px 14px 60px; }
+    .steps li::before { left: 16px; top: 16px; width: 30px; height: 30px; }
+    .path { white-space: normal; }
+  }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<div class="board" aria-hidden="true"></div>
+<main>
+  <section class="hero" style="border-top: 0">
+    <img src="icon.png" alt="" width="128" height="128">
+    <p class="tag">Beta for invited testers</p>
+    <h1>Abba Schedule 1</h1>
+    <p class="lede">Film and TV scheduling for the Mac: breakdowns, stripboards, a shooting calendar, Day Out of Days, and reports you design yourself.</p>
+    <a class="btn" href="https://github.com/christianabbat-glitch/abbaschedule/releases/download/v0.9-beta1-build1/Abba-Schedule-1-0.9-beta-1.dmg" id="download">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 17h12"/></svg>
+      Download for Mac
+    </a>
+    <p class="meta">Version 0.9 beta 1 · 41 MB disk image</p>
+    <p class="req"><strong>Needs a Mac with Apple silicon</strong> (M1 or later) and macOS 13 Ventura or newer. Intel Macs aren't supported yet.</p>
+  </section>
+
+  <section id="install" aria-labelledby="install-title">
+    <h2 id="install-title">Installing</h2>
+    <ol class="steps">
+      <li>
+        <h3>Drag it to Applications</h3>
+        <p>Open the downloaded disk image and drag Abba Schedule 1 onto the Applications folder.</p>
+      </li>
+      <li>
+        <h3>Open it once, and let macOS stop it</h3>
+        <p>This beta isn't signed with an Apple Developer ID yet, so macOS says it can't check the app for malware. Click <span class="path">Done</span>, not Move to Trash.</p>
+      </li>
+      <li>
+        <h3>Allow it in System Settings</h3>
+        <p>Right away, open <span class="path">System Settings › Privacy &amp; Security</span>, scroll down to Security and click <span class="path">Open Anyway</span> beside “Abba Schedule 1”. Confirm with your password or Touch ID, then click Open Anyway once more.</p>
+      </li>
+    </ol>
+    <p class="note">You only do this once for each new beta. On macOS 13 or 14 you can instead Control-click the app in Applications and choose Open.</p>
+  </section>
+
+  <section id="start" aria-labelledby="start-title">
+    <h2 id="start-title">Getting started</h2>
+    <ul class="facts">
+      <li>
+        <strong>A demo to explore</strong>
+        <span>AS1 opens on a new, empty schedule. <span class="path">File › Open Demo Schedule</span> opens “Cabin by the Lake”, a complete example to try things on.</span>
+      </li>
+      <li>
+        <strong>Bring your Movie Magic schedules</strong>
+        <span>File › Open reads Movie Magic Scheduling 6 files (.msd) as a new AS1 schedule, and your .msd is never changed. <span class="path">File › Export as Movie Magic File</span> goes the other way.</span>
+      </li>
+      <li>
+        <strong>Your last ten saves are kept</strong>
+        <span>Each schedule's earlier versions go to the Backups folder in “Abba Schedule 1” in your home folder. <span class="path">File › Restore from Backup…</span> brings one back.</span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="feedback" class="feedback" aria-labelledby="feedback-title">
+    <h2 id="feedback-title">Found a problem?</h2>
+    <p>Bugs, confusing bits, anything that slows you down. Say what you were doing, what happened and what you expected. A screenshot or your .as1 file helps a lot.</p>
+    <a class="btn secondary" href="mailto:christianabbat@gmail.com?subject=Abba%20Schedule%201%20(0.9%20beta%201)%20feedback&amp;body=What%20were%20you%20doing%3F%0A%0AWhat%20happened%2C%20and%20what%20did%20you%20expect%3F%0A%0AYour%20Mac%20and%20macOS%20version%3A%0A%0A">Email feedback</a>
+  </section>
+</main>
+<footer>
+  <p>© 2026 Christian Abbatiello</p>
+  <p>Movie Magic Scheduling is a trademark of its owner. Abba Schedule 1 is an independent app and isn't affiliated with it.</p>
+</footer>
+</body>
+</html>

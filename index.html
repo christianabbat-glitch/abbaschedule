@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Abba Schedule 1 Beta</title>
-<meta name="description" content="Abba Schedule 1 — film and TV scheduling for the Mac. Beta download for invited testers.">
+<meta name="description" content="Abba Schedule 1 — film and TV scheduling for Mac and Windows. Beta download for invited testers.">
 <!-- For invited testers: reachable by its link, kept out of search engines. -->
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="Abba Schedule 1 — beta">
-<meta property="og:description" content="Film and TV scheduling for the Mac. Download the beta and install it in three steps.">
+<meta property="og:description" content="Film and TV scheduling for Mac and Windows. Download the beta and install it in three steps.">
 <meta property="og:image" content="https://christianabbat-glitch.github.io/abbaschedule/icon.png">
 <meta name="theme-color" content="#FBF6EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16110C" media="(prefers-color-scheme: dark)">
@@ -119,8 +119,24 @@
   .btn.secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); font-size: 16px; padding: 11px 22px; }
   .btn.secondary:hover { background: var(--surface); }
   .meta { margin: 12px 0 0; font-size: 15px; color: var(--muted); }
-  .req { margin: 18px auto 0; max-width: 28em; font-size: 15px; color: var(--muted); }
+  .req { margin: 10px auto 0; max-width: 24em; font-size: 14px; color: var(--muted); }
   .req strong { color: var(--ink); font-weight: 700; }
+
+  /* One download per computer, side by side; the visitor's own first (the script at the end). */
+  .downloads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; text-align: center; }
+  .download {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 18px 20px;
+  }
+  .download .btn { width: 100%; justify-content: center; }
+  .soon { margin: 0; padding: 15px 0; font-weight: 700; color: var(--muted); }
+  .on-windows .download.windows, .on-mac .download.mac { order: -1; }
+  .on-windows .download.mac .btn, .on-mac .download.windows .btn {
+    background: transparent; color: var(--ink); border: 1.5px solid var(--ink); padding: 13.5px 28px;
+  }
+  .on-windows .download.mac .btn:hover, .on-mac .download.windows .btn:hover { background: var(--bg); }
+  .install-for { font-size: 19px; margin: 26px 0 12px; }
+  .install-for:first-of-type { margin-top: 0; }
 
   section { padding: 36px 0; border-top: 1px solid var(--line); }
   h2 { font-size: 24px; line-height: 1.25; margin: 0 0 18px; }
@@ -167,6 +183,7 @@
     .hero img { width: 104px; height: 104px; }
     .lede { font-size: 17px; }
     .btn { width: 100%; justify-content: center; }
+    .downloads { grid-template-columns: 1fr; }
     .steps li { padding: 16px 16px 14px 60px; }
     .steps li::before { left: 16px; top: 16px; width: 30px; height: 30px; }
     .path { white-space: normal; }
@@ -181,17 +198,26 @@
     <img src="icon.png" alt="" width="128" height="128">
     <p class="tag">Beta for invited testers</p>
     <h1>Abba Schedule 1</h1>
-    <p class="lede">Film and TV scheduling for the Mac: breakdowns, stripboards, a shooting calendar, Day Out of Days, and reports you design yourself.</p>
-    <a class="btn" href="https://github.com/christianabbat-glitch/abbaschedule/releases/download/v0.9-beta1-build2/Abba-Schedule-1-0.9-beta-1-build-2.dmg" id="download">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 17h12"/></svg>
-      Download for Mac
-    </a>
-    <p class="meta">Version 0.9 beta 1 (build 2) · 41 MB disk image</p>
-    <p class="req"><strong>Needs a Mac with Apple silicon</strong> (M1 or later) and macOS 13 Ventura or newer. Intel Macs aren't supported yet.</p>
+    <p class="lede">Film and TV scheduling for Mac and Windows: breakdowns, stripboards, a shooting calendar, Day Out of Days, and reports you design yourself.</p>
+    <div class="downloads">
+      <div class="download mac">
+        <a class="btn" href="https://github.com/christianabbat-glitch/abbaschedule/releases/download/v0.9-beta1-build3/Abba-Schedule-1-0.9-beta-1-build-3.dmg" id="download-mac">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 17h12"/></svg>
+          Download for Mac
+        </a>
+        <p class="meta">Version 0.9 beta 1 (build 3) · 41 MB disk image</p>
+        <p class="req"><strong>A Mac with Apple silicon</strong> (M1 or later) and macOS 13 Ventura or newer. Intel Macs aren't supported yet.</p>
+      </div>
+      <div class="download windows">
+        <p class="soon">Windows version coming soon</p>
+        <p class="req"><strong>Windows 10</strong> (version 1809 or later) <strong>or Windows 11</strong>, 64-bit.</p>
+      </div>
+    </div>
   </section>
 
   <section id="install" aria-labelledby="install-title">
     <h2 id="install-title">Installing</h2>
+    <h3 class="install-for">On a Mac</h3>
     <ol class="steps">
       <li>
         <h3>Drag it to Applications</h3>
@@ -230,9 +256,17 @@
   <section id="feedback" class="feedback" aria-labelledby="feedback-title">
     <h2 id="feedback-title">Found a problem?</h2>
     <p>Bugs, confusing bits, anything that slows you down. Say what you were doing, what happened and what you expected. A screenshot or your .as1 file helps a lot.</p>
-    <a class="btn secondary" href="mailto:christianabbat@gmail.com?subject=Abba%20Schedule%201%20(0.9%20beta%201%20%28build%202%29)%20feedback&amp;body=What%20were%20you%20doing%3F%0A%0AWhat%20happened%2C%20and%20what%20did%20you%20expect%3F%0A%0AYour%20Mac%20and%20macOS%20version%3A%0A%0A">Email feedback</a>
+    <a class="btn secondary" href="mailto:christianabbat@gmail.com?subject=Abba%20Schedule%201%20(0.9%20beta%201%20%28build%203%29)%20feedback&amp;body=What%20were%20you%20doing%3F%0A%0AWhat%20happened%2C%20and%20what%20did%20you%20expect%3F%0A%0AYour%20computer%20(Mac%20or%20PC)%20and%20its%20system%20version%3A%0A%0A">Email feedback</a>
   </section>
 </main>
+<script>
+  // The visitor's own computer first, its button the bold one (without this, both look the same).
+  (function () {
+    var ua = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "";
+    var kind = /win/i.test(ua) ? "on-windows" : /mac/i.test(ua) ? "on-mac" : "";
+    if (kind) document.documentElement.classList.add(kind);
+  })();
+</script>
 <footer>
   <p>© 2026 Christian Abbatiello</p>
   <p>Movie Magic Scheduling is a trademark of its owner. Abba Schedule 1 is an independent app and isn't affiliated with it.</p>

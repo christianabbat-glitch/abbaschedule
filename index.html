@@ -32,6 +32,9 @@
     --gold: #F2B705;
     --step: #6B2E0E;            /* the icon's brown outline */
     --step-ink: #FFFFFF;
+    /* The Mac in the install pictures: its own grays, the system's blue selection. */
+    --mac-bg: #FFFFFF; --mac-side: #EFEDEB; --mac-group: #F3F2F1; --mac-line: #D8D5D1;
+    --mac-ink: #1F1F1F; --mac-muted: #6B6966; --mac-btn: #FFFFFF; --mac-select: #0A64D6;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -45,11 +48,15 @@
       --accent-hover: #FF8F4A;
       --step: #F2B705;
       --step-ink: #1A0E05;
+      --mac-bg: #2B2927; --mac-side: #232120; --mac-group: #34312F; --mac-line: #4A4643;
+      --mac-ink: #F2F0EE; --mac-muted: #A9A49F; --mac-btn: #4A4643; --mac-select: #0A64D6;
     }
   }
   :root[data-theme="dark"] {
     --bg: #16110C; --surface: #211A13; --ink: #F6EEE2; --muted: #BCA893; --line: #3A2E22;
     --accent: #FF7A26; --accent-ink: #1A0E05; --accent-hover: #FF8F4A; --step: #F2B705; --step-ink: #1A0E05;
+    --mac-bg: #2B2927; --mac-side: #232120; --mac-group: #34312F; --mac-line: #4A4643;
+    --mac-ink: #F2F0EE; --mac-muted: #A9A49F; --mac-btn: #4A4643; --mac-select: #0A64D6;
   }
 
   * { box-sizing: border-box; }
@@ -156,7 +163,38 @@
   @media (max-width: 640px) {
     .downloads { grid-template-columns: 1fr; }
   }
+  /* What macOS shows at each step, drawn small, the button to click ringed in AS1's orange. */
+  .shot { margin: 14px 0 2px; display: grid; justify-items: center; gap: 8px; }
+  .shot figcaption { font-size: 14px; color: var(--muted); text-align: center; }
+  .mac { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: var(--mac-ink);
+    background: var(--mac-bg); border: 1px solid var(--mac-line); box-shadow: 0 8px 22px rgba(40, 25, 10, 0.14); }
+  .mac-alert { width: min(100%, 270px); border-radius: 14px; padding: 16px 16px 14px; text-align: center; font-size: 12px; }
+  .mac-alert img { width: 44px; height: 44px; display: block; margin: 0 auto; }
+  .mac-alert b { display: block; font-size: 13px; margin: 8px 0 4px; }
+  .mac-alert p { margin: 0 0 12px; color: var(--mac-muted); font-size: 11.5px; line-height: 1.35; }
+  .mac-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mac-btn { border: 1px solid var(--mac-line); background: var(--mac-btn); border-radius: 6px; padding: 5px 6px;
+    font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .mac-btn.click { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .mac-window { width: min(100%, 540px); border-radius: 12px; overflow: hidden; display: grid;
+    grid-template-columns: 34% 1fr; font-size: 12px; text-align: left; }
+  .mac-side { background: var(--mac-side); padding: 12px 8px; display: grid; gap: 2px; align-content: start;
+    border-right: 1px solid var(--mac-line); }
+  .mac-side span { padding: 4px 8px; border-radius: 6px; color: var(--mac-muted); white-space: nowrap; overflow: hidden; }
+  .mac-side span.on { background: var(--mac-select); color: #FFFFFF; }
+  .mac-pane { padding: 12px 14px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .mac-pane strong { font-size: 13px; }
+  .mac-pane small { color: var(--mac-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+  .mac-group { background: var(--mac-group); border: 1px solid var(--mac-line); border-radius: 8px; padding: 9px 14px 9px 10px;
+    display: grid; gap: 10px; }
+  .mac-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .mac-row span { min-width: 0; }
+  .mac-row .mac-btn { flex: none; }   /* (the button whole, its ring inside the window) */
+  .mac-faint { color: var(--mac-muted); }
+
   @media (max-width: 480px) {
+    .mac-window { grid-template-columns: 1fr; }
+    .mac-side { display: none; }
     .download .btn { font-size: 17px; padding-left: 12px; padding-right: 12px; }
     body { font-size: 16px; }
     .hero { padding-top: 40px; }
@@ -209,10 +247,46 @@
       <li>
         <h3>Open it once, and let macOS stop it</h3>
         <p>This beta isn't signed with an Apple Developer ID yet, so macOS says it can't check the app for malware. Click <span class="path">Done</span>, not Move to Trash.</p>
+        <figure class="shot">
+          <div class="mac mac-alert" aria-hidden="true">
+            <img src="icon.png" alt="" width="44" height="44">
+            <b>“Abba Schedule 1” Not Opened</b>
+            <p>Apple could not verify “Abba Schedule 1” is free of malware that may harm your Mac or compromise your privacy.</p>
+            <div class="mac-btns"><span class="mac-btn click">Done</span><span class="mac-btn">Move to Trash</span></div>
+          </div>
+          <figcaption>Click <strong>Done</strong>.</figcaption>
+        </figure>
       </li>
       <li>
-        <h3>Allow it in System Settings</h3>
-        <p>Right away, open <span class="path">System Settings › Privacy &amp; Security</span>, scroll down to Security and click <span class="path">Open Anyway</span> beside “Abba Schedule 1”. Confirm with your password or Touch ID, then click Open Anyway once more.</p>
+        <h3>Within the hour, allow it in System Settings</h3>
+        <p>Open <span class="path">System Settings › Privacy &amp; Security</span>, scroll down to Security, and click <span class="path">Open Anyway</span> beside “Abba Schedule 1”. The button is only there for about an hour after you tried to open the app; if it's gone, open the app again first.</p>
+        <figure class="shot">
+          <div class="mac mac-window" aria-hidden="true">
+            <div class="mac-side"><span>General</span><span>Appearance</span><span>Desktop &amp; Dock</span><span class="on">Privacy &amp; Security</span><span>Touch ID &amp; Password</span></div>
+            <div class="mac-pane">
+              <strong>Privacy &amp; Security</strong>
+              <small>Security</small>
+              <div class="mac-group">
+                <div class="mac-row"><span class="mac-faint">Allow applications from</span><span>App Store &amp; Known Developers</span></div>
+                <div class="mac-row"><span>“Abba Schedule 1” was blocked to protect your Mac.</span><span class="mac-btn click">Open Anyway</span></div>
+              </div>
+            </div>
+          </div>
+          <figcaption>Scroll down to Security, then click <strong>Open Anyway</strong>.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <h3>Confirm it</h3>
+        <p>Enter your Mac's password or use Touch ID, then click <span class="path">Open Anyway</span> once more. Abba Schedule 1 opens, and from then on it opens like any other app.</p>
+        <figure class="shot">
+          <div class="mac mac-alert" aria-hidden="true">
+            <img src="icon.png" alt="" width="44" height="44">
+            <b>Open “Abba Schedule 1”?</b>
+            <p>Apple is not able to verify that it is free from malware. Only open it if you trust where it came from.</p>
+            <div class="mac-btns"><span class="mac-btn click">Open Anyway</span><span class="mac-btn">Done</span></div>
+          </div>
+          <figcaption>Click <strong>Open Anyway</strong>.</figcaption>
+        </figure>
       </li>
     </ol>
     <p class="note">You only do this once for each new beta. On macOS 13 or 14 you can instead Control-click the app in Applications and choose Open.</p>

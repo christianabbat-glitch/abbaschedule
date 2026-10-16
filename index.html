@@ -197,7 +197,8 @@
   /* What macOS shows at each step, drawn small, the button to click ringed in AS1's orange. */
   .shot { margin: 14px 0 2px; display: grid; justify-items: center; gap: 8px; }
   .shot figcaption { font-size: 14px; color: var(--muted); text-align: center; }
-  .mac { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: var(--mac-ink);
+  /* (.mac-ui, not .mac: that is the Mac download card, which took Apple's font and greys from this.) */
+  .mac-ui { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: var(--mac-ink);
     background: var(--mac-bg); border: 1px solid var(--mac-line); box-shadow: 0 8px 22px rgba(40, 25, 10, 0.14); }
   .mac-alert { width: min(100%, 270px); border-radius: 14px; padding: 16px 16px 14px; text-align: center; font-size: 12px; }
   .mac-alert img { width: 44px; height: 44px; display: block; margin: 0 auto; }
@@ -320,7 +321,7 @@
         <h3>Open it once, and let macOS stop it</h3>
         <p>This beta isn't signed with an Apple Developer ID yet, so macOS says it can't check the app for malware. Click <span class="path">Done</span>, not Move to Trash.</p>
         <figure class="shot">
-          <div class="mac mac-alert" aria-hidden="true">
+          <div class="mac-ui mac-alert" aria-hidden="true">
             <img src="icon.png" alt="" width="44" height="44">
             <b>“Abba Schedule 1” Not Opened</b>
             <p>Apple could not verify “Abba Schedule 1” is free of malware that may harm your Mac or compromise your privacy.</p>
@@ -333,7 +334,7 @@
         <h3>Within the hour, allow it in System Settings</h3>
         <p>Open <span class="path">System Settings › Privacy &amp; Security</span>, scroll down to Security, and click <span class="path">Open Anyway</span> beside “Abba Schedule 1”. The button is only there for about an hour after you tried to open the app; if it's gone, open the app again first.</p>
         <figure class="shot">
-          <div class="mac mac-window" aria-hidden="true">
+          <div class="mac-ui mac-window" aria-hidden="true">
             <div class="mac-side"><span>General</span><span>Appearance</span><span>Desktop &amp; Dock</span><span class="on">Privacy &amp; Security</span><span>Touch ID &amp; Password</span></div>
             <div class="mac-pane">
               <strong>Privacy &amp; Security</strong>
@@ -351,7 +352,7 @@
         <h3>Confirm it</h3>
         <p>Enter your Mac's password or use Touch ID, then click <span class="path">Open Anyway</span> once more. Abba Schedule 1 opens, and from then on it opens like any other app.</p>
         <figure class="shot">
-          <div class="mac mac-alert" aria-hidden="true">
+          <div class="mac-ui mac-alert" aria-hidden="true">
             <img src="icon.png" alt="" width="44" height="44">
             <b>Open “Abba Schedule 1”?</b>
             <p>Apple is not able to verify that it is free from malware. Only open it if you trust where it came from.</p>

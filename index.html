@@ -32,11 +32,6 @@
     --gold: #F2B705;
     --step: #6B2E0E;            /* the icon's brown outline */
     --step-ink: #FFFFFF;
-    --strip-white: #FFFFFF;
-    --strip-yellow: #FFE97A;
-    --strip-blue: #A9CFF4;
-    --strip-green: #B5DE98;
-    --strip-break: #2A1A0E;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -50,17 +45,11 @@
       --accent-hover: #FF8F4A;
       --step: #F2B705;
       --step-ink: #1A0E05;
-      --strip-white: #E9E2D6;
-      --strip-yellow: #D9C24E;
-      --strip-blue: #7FA9D3;
-      --strip-green: #8DB874;
-      --strip-break: #000000;
     }
   }
   :root[data-theme="dark"] {
     --bg: #16110C; --surface: #211A13; --ink: #F6EEE2; --muted: #BCA893; --line: #3A2E22;
     --accent: #FF7A26; --accent-ink: #1A0E05; --accent-hover: #FF8F4A; --step: #F2B705; --step-ink: #1A0E05;
-    --strip-white: #E9E2D6; --strip-yellow: #D9C24E; --strip-blue: #7FA9D3; --strip-green: #8DB874; --strip-break: #000000;
   }
 
   * { box-sizing: border-box; }
@@ -72,22 +61,6 @@
     font-family: "Archivo", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     font-size: 17px;
     line-height: 1.55;
-  }
-
-  /* A stripboard along the top: day strips in the industry colors, a black day break now and then. */
-  .board {
-    height: 14px;
-    background: linear-gradient(90deg,
-      var(--strip-white) 0 4%, var(--strip-yellow) 4% 8%, var(--strip-blue) 8% 12%, var(--strip-white) 12% 16%,
-      var(--strip-green) 16% 20%, var(--strip-break) 20% 21.5%, var(--strip-yellow) 21.5% 25.5%,
-      var(--strip-white) 25.5% 29.5%, var(--strip-yellow) 29.5% 33.5%, var(--strip-blue) 33.5% 37.5%,
-      var(--strip-break) 37.5% 39%, var(--strip-white) 39% 43%, var(--strip-green) 43% 47%, var(--strip-blue) 47% 51%,
-      var(--strip-yellow) 51% 55%, var(--strip-white) 55% 59%, var(--strip-break) 59% 60.5%, var(--strip-blue) 60.5% 64.5%,
-      var(--strip-yellow) 64.5% 68.5%, var(--strip-white) 68.5% 72.5%, var(--strip-green) 72.5% 76.5%,
-      var(--strip-break) 76.5% 78%, var(--strip-yellow) 78% 82%, var(--strip-white) 82% 86%, var(--strip-blue) 86% 90%,
-      var(--strip-white) 90% 94%, var(--strip-yellow) 94% 98%, var(--strip-break) 98% 100%);
-    border-bottom: 1px solid var(--line);
-    background-size: 900px 100%;
   }
 
   main { max-width: 680px; margin: 0 auto; padding: 0 16px; }
@@ -128,11 +101,13 @@
     display: flex; flex-direction: column; align-items: center; gap: 0;
     background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 18px 20px;
   }
-  .download .btn { width: 100%; justify-content: center; }
+  /* The two buttons the same size, each label on one line (the Windows one wrapped): the other computer's outlined
+     inside its edge, so no border changes its size. */
+  .download .btn { width: 100%; justify-content: center; white-space: nowrap; padding-left: 16px; padding-right: 16px; }
   .soon { margin: 0; padding: 15px 0; font-weight: 700; color: var(--muted); }
   .on-windows .download.windows, .on-mac .download.mac { order: -1; }
   .on-windows .download.mac .btn, .on-mac .download.windows .btn {
-    background: transparent; color: var(--ink); border: 1.5px solid var(--ink); padding: 13.5px 28px;
+    background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink);
   }
   .on-windows .download.mac .btn:hover, .on-mac .download.windows .btn:hover { background: var(--bg); }
   .install-for { font-size: 19px; margin: 26px 0 12px; }
@@ -177,7 +152,12 @@
   }
   footer p { margin: 0 0 6px; }
 
+  /* Side by side only where a card holds the longer label (Windows', 197px at 18px bold) on one line; else stacked. */
+  @media (max-width: 640px) {
+    .downloads { grid-template-columns: 1fr; }
+  }
   @media (max-width: 480px) {
+    .download .btn { font-size: 17px; padding-left: 12px; padding-right: 12px; }
     body { font-size: 16px; }
     .hero { padding-top: 40px; }
     .hero img { width: 104px; height: 104px; }
@@ -192,7 +172,6 @@
 </style>
 </head>
 <body>
-<div class="board" aria-hidden="true"></div>
 <main>
   <section class="hero" style="border-top: 0">
     <img src="icon.png" alt="" width="128" height="128">

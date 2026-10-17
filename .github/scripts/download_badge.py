@@ -1,10 +1,18 @@
-"""Write downloads.svg: a badge showing release-asset downloads split by platform."""
+"""Write downloads.svg: release-asset downloads split by platform.
+
+GitHub forgets a file's download count when its release (or the file) is
+deleted or re-uploaded. To keep a lifetime total, every asset ever seen is
+recorded in a ledger (ledger.json, stored on the `tracker-data` branch so app
+uploads to main never touch it). Each asset keeps the highest count seen.
+"""
 import json
 import os
+import sys
 import urllib.request
 
 repo = os.environ["GITHUB_REPOSITORY"]
 token = os.environ.get("GITHUB_TOKEN", "")
+ledger_path = sys.argv[1] if len(sys.argv) > 1 else "ledger.json"
 
 
 def platform(name: str) -> str:
@@ -16,7 +24,12 @@ def platform(name: str) -> str:
     return "Other"
 
 
-counts = {"Windows": 0, "Mac": 0, "Other": 0}
+try:
+    with open(ledger_path) as f:
+        ledger = json.load(f)
+except FileNotFoundError:
+    ledger = {}
+
 page = 1
 while True:
     req = urllib.request.Request(
@@ -31,12 +44,24 @@ while True:
         if rel.get("draft"):
             continue
         for a in rel.get("assets", []):
-            counts[platform(a["name"])] += a.get("download_count", 0)
+            key = str(a["id"])
+            prev = ledger.get(key, {}).get("downloads", 0)
+            ledger[key] = {
+                "release": rel["tag_name"],
+                "name": a["name"],
+                "downloads": max(prev, a.get("download_count", 0)),
+            }
     page += 1
 
+with open(ledger_path, "w") as f:
+    json.dump(ledger, f, indent=2, sort_keys=True)
+    f.write("\n")
+
+counts = {"Windows": 0, "Mac": 0, "Other": 0}
+for entry in ledger.values():
+    counts[platform(entry["name"])] += entry["downloads"]
 total = sum(counts.values())
 
-# Segments: (text, background colour). "Other" only appears if it has downloads.
 segments = [
     ("downloads", "#555"),
     (f"Windows {counts['Windows']:,}", "#0067b8"),
@@ -46,7 +71,6 @@ if counts["Other"]:
     segments.append((f"Other {counts['Other']:,}", "#8a6d3b"))
 segments.append((f"total {total:,}", "#2e7d32"))
 
-# Approximate text widths (Verdana 11px ~ 6.8px/char) plus padding.
 widths = [int(len(t) * 6.8) + 14 for t, _ in segments]
 w = sum(widths)
 

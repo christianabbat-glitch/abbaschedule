@@ -3,7 +3,7 @@
 <linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
 <clipPath id="r"><rect width="259" height="20" rx="3" fill="#fff"/></clipPath>
 <g clip-path="url(#r)">
-<rect x="0" width="75" height="20" fill="#555"/><rect x="75" width="75" height="20" fill="#fd625e"/><rect x="150" width="48" height="20" fill="#6e6e73"/><rect x="198" width="61" height="20" fill="#2e7d32"/>
+<rect x="0" width="75" height="20" fill="#555"/><rect x="75" width="75" height="20" fill="#fd625e"/><rect x="150" width="48" height="20" fill="#499195"/><rect x="198" width="61" height="20" fill="#a3623a"/>
 <rect width="259" height="20" fill="url(#s)"/>
 </g>
 <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">

@@ -2,7 +2,7 @@ name: Update download badge
 
 on:
   schedule:
-    - cron: "17 */3 * * *"   # every 3 hours
+    - cron: "*/5 * * * *"   # every 5 minutes (GitHub's minimum)
   release:
     types: [published, edited]
   workflow_dispatch:

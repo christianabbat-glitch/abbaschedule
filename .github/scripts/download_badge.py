@@ -4,6 +4,12 @@ GitHub forgets a file's download count when its release (or the file) is
 deleted or re-uploaded. To keep a lifetime total, every asset ever seen is
 recorded in a ledger (ledger.json, stored on the `tracker-data` branch so app
 uploads to main never touch it). Each asset keeps the highest count seen.
+
+The badge counts testers' downloads: the publishers' own checks (each
+computer once downloaded what it had just published, to compare it) are
+listed by file name in own-downloads.json, which comes from main with the
+page, and counted out here -- never out of the ledger, which keeps every
+download. (Publishing checks a file by its fingerprint now, not a download.)
 """
 import json
 import os
@@ -57,9 +63,19 @@ with open(ledger_path, "w") as f:
     json.dump(ledger, f, indent=2, sort_keys=True)
     f.write("\n")
 
-counts = {"Windows": 0, "Mac": 0, "Other": 0}
+try:
+    with open("own-downloads.json") as f:
+        own = json.load(f).get("files", {})
+except (OSError, ValueError, AttributeError):
+    own = {}
+
+by_name = {}
 for entry in ledger.values():
-    counts[platform(entry["name"])] += entry["downloads"]
+    by_name[entry["name"]] = by_name.get(entry["name"], 0) + entry["downloads"]
+
+counts = {"Windows": 0, "Mac": 0, "Other": 0}
+for name, downloads in by_name.items():
+    counts[platform(name)] += max(0, downloads - int(own.get(name, 0)))
 total = sum(counts.values())
 
 segments = [
